@@ -1,0 +1,3 @@
+name = "smepro360"
+compatibility_date = "2026-06-05"
+pages_build_output_dir = "frontend/build"

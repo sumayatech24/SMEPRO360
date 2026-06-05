@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Light Mode Base ─────────────────────────────────────────────────────── */
+:root {
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #0f172a;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --border-focus: #6366f1;
+  --input-bg: #f8fafc;
+}
+
+/* ── Dark Mode Base ──────────────────────────────────────────────────────── */
+.dark {
+  --bg-primary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-sidebar: #020617;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --border-focus: #818cf8;
+  --input-bg: #1e293b;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+* { box-sizing: border-box; }
+
+/* ── Dark mode overrides ─────────────────────────────────────────────────── */
+.dark .bg-white           { background-color: #1e293b !important; }
+.dark .bg-slate-50        { background-color: #0f172a !important; }
+.dark .bg-slate-100       { background-color: #1e293b !important; }
+.dark .bg-slate-200       { background-color: #334155 !important; }
+.dark .border-slate-100   { border-color: #334155 !important; }
+.dark .border-slate-200   { border-color: #334155 !important; }
+.dark .text-slate-800     { color: #f1f5f9 !important; }
+.dark .text-slate-700     { color: #e2e8f0 !important; }
+.dark .text-slate-600     { color: #cbd5e1 !important; }
+.dark .text-slate-500     { color: #94a3b8 !important; }
+.dark .text-slate-400     { color: #64748b !important; }
+.dark .shadow-sm          { box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important; }
+.dark .shadow-md          { box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important; }
+
+/* Cards & inputs */
+.dark input, .dark select, .dark textarea {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+.dark input::placeholder { color: #475569 !important; }
+
+/* Table rows */
+.dark .hover\:bg-slate-50:hover { background-color: #334155 !important; }
+.dark .divide-slate-50 > * + *  { border-color: #334155 !important; }
+.dark .divide-slate-100 > * + * { border-color: #334155 !important; }
+
+/* Sidebar stays dark always */
+aside { background-color: var(--bg-sidebar) !important; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+.animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Gradients ───────────────────────────────────────────────────────────── */
+.gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+.card-hover { transition: all 0.2s; }
+.card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+
+/* ── Dark modal backdrop ─────────────────────────────────────────────────── */
+.dark .bg-white.rounded-2xl { background-color: #1e293b !important; }
