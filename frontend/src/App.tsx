@@ -44,7 +44,6 @@ import GlobalPayrollPage from './pages/hr/GlobalPayrollPage';
 import EmployeeDetailPage from './pages/hr/EmployeeDetailPage';
 import MySpacePage from './pages/myspace/MySpacePage';
 import ResourcePlanningPage from './pages/hr/ResourcePlanningPage';
-import MySpacePage from './pages/myspace/MySpacePage';
 import LeaveModulePage from './pages/hr/LeaveModulePage';
 import TaxPage from './pages/tax/TaxPage';
 import InventoryPage from './pages/inventory/InventoryPage';
