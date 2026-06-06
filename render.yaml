@@ -1,0 +1,66 @@
+# SMEPRO360 — one-click Render Blueprint (FREE tier)
+# Deploys BOTH the FastAPI backend (Docker) and the React frontend (static site).
+# Database stays on Supabase (already seeded). Nothing else to host.
+#
+# DEPLOY (≈3 minutes):
+#   1. Sign in to https://render.com with your GitHub account.
+#   2. New ➜ Blueprint ➜ pick the `sumayatech24/SMEPRO360` repo ➜ Render reads this file.
+#   3. You'll be prompted for the 2 secret env vars below (DATABASE_URL, SECRET_KEY).
+#      DATABASE_URL = postgresql://postgres:<your-supabase-pwd>@db.xxzjrhywtsqcafdtsdlg.supabase.co:5432/postgres?sslmode=require
+#      SECRET_KEY   = any long random string
+#   4. Apply ➜ both services build. Frontend auto-points at the backend URL.
+#
+# After first deploy you get:
+#   Backend : https://smepro360-api.onrender.com   (Swagger at /docs)
+#   Frontend: https://smepro360-web.onrender.com   (login admin@smepro360.com / Admin@123456)
+# Add custom domains (smepro360.com / api.smepro360.com) later in each service's Settings.
+
+services:
+  # ── Backend (FastAPI, Docker) ────────────────────────────────────────────
+  - type: web
+    name: smepro360-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false   # Supabase connection string (prompted on deploy)
+      - key: SECRET_KEY
+        sync: false   # long random string (prompted on deploy)
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "30"
+      - key: APP_NAME
+        value: SMEPRO360
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: FIRST_SUPERUSER
+        value: admin@smepro360.com
+      - key: FIRST_SUPERUSER_PASSWORD
+        value: Admin@123456
+      # CORS — allow the Render frontend + future custom domains
+      - key: BACKEND_CORS_ORIGINS
+        value: '["https://smepro360-web.onrender.com","https://smepro360.com","https://www.smepro360.com","http://localhost:3000"]'
+
+  # ── Frontend (React static site) ─────────────────────────────────────────
+  - type: web
+    name: smepro360-web
+    runtime: static
+    buildCommand: cd frontend && CI=false npm install && npm run build
+    staticPublishPath: ./frontend/build
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://smepro360-api.onrender.com/api/v1
+      - key: NODE_VERSION
+        value: "20"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
