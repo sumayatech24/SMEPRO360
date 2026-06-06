@@ -5,8 +5,8 @@ import { useAuthStore } from '../store/authStore';
 import Logo from '../components/Logo';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('admin@smepro360.com');
-  const [password, setPassword] = useState('Admin@123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuthStore();
@@ -111,11 +111,6 @@ const Login: React.FC = () => {
             </button>
           </form>
 
-          <div className="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
-            <p className="text-xs text-slate-500 font-medium mb-2">Demo Credentials</p>
-            <p className="text-xs text-slate-600">Email: <span className="font-mono text-indigo-600">admin@smepro360.com</span></p>
-            <p className="text-xs text-slate-600">Password: <span className="font-mono text-indigo-600">Admin@123456</span></p>
-          </div>
         </div>
       </div>
     </div>

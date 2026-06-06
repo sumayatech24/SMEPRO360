@@ -256,23 +256,7 @@ export default function EmployeeDetailPage() {
               {category:'Admin',color:'#8b5cf6'},
               {category:'Performance',color:'#ef4444'},
             ].map(({category,color})=>{
-              const catTasks = (onboarding?.tasks || [
-                {id:'t1',task:'Submit personal documents',category:'HR',due_days:1,is_mandatory:true},
-                {id:'t2',task:'Sign offer letter and NDA',category:'HR',due_days:1,is_mandatory:true},
-                {id:'t3',task:'Complete background verification',category:'HR',due_days:2,is_mandatory:true},
-                {id:'t4',task:'Laptop/workstation allocation',category:'IT',due_days:1,is_mandatory:true},
-                {id:'t5',task:'Create email and system access',category:'IT',due_days:1,is_mandatory:true},
-                {id:'t6',task:'Add to payroll system',category:'HR',due_days:3,is_mandatory:true},
-                {id:'t7',task:'HR orientation session',category:'HR',due_days:2,is_mandatory:true},
-                {id:'t8',task:'Department introduction',category:'Operations',due_days:3,is_mandatory:true},
-                {id:'t9',task:'Meet key stakeholders',category:'Operations',due_days:5,is_mandatory:false},
-                {id:'t10',task:'Assign buddy / mentor',category:'HR',due_days:1,is_mandatory:true},
-                {id:'t11',task:'Complete compliance training',category:'Training',due_days:7,is_mandatory:true},
-                {id:'t12',task:'Set probation goals',category:'Performance',due_days:7,is_mandatory:true},
-                {id:'t13',task:'ID card issuance',category:'Admin',due_days:3,is_mandatory:true},
-                {id:'t14',task:'Add to health insurance',category:'HR',due_days:7,is_mandatory:true},
-                {id:'t15',task:'30-day check-in',category:'HR',due_days:30,is_mandatory:false},
-              ]).filter((t:any)=>t.category===category);
+              const catTasks = (onboarding?.tasks || []).filter((t:any)=>t.category===category);
               if (!catTasks.length) return null;
               return (
                 <div key={category} className="rounded-xl overflow-hidden border border-slate-100 dark:border-slate-700">

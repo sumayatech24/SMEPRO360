@@ -70,7 +70,7 @@ const EmployeesPage: React.FC = () => {
         <div className="text-xs text-slate-500">{r.email}</div>
       </button>
     )},
-    { key: 'department_id', title: 'Dept', render: (r: any) => r.department_id ? `Dept ${r.department_id}` : '—' },
+    { key: 'department_id', title: 'Dept', render: (r: any) => departments.find((d: any) => d.id === r.department_id)?.name || (r.department_id ? `Dept ${r.department_id}` : '—') },
     { key: 'employment_type', title: 'Type', render: (r: any) => <Badge label={r.employment_type?.replace('_',' ')} color="blue" /> },
     { key: 'basic_salary', title: 'Basic Salary', render: (r: any) => `₹${(r.basic_salary||0).toLocaleString('en-IN')}` },
     { key: 'status', title: 'Status', render: (r: any) => <Badge label={r.status||'active'} color={r.status==='active'?'green':'gray'} /> },

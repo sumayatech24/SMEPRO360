@@ -59,9 +59,7 @@ export default function StockPage() {
       await api.post('/inventory/stock/adjust', { product_id: adjModal.product.id, quantity: Number(adjQty), reason: adjReason || 'Manual adjustment' });
       toast.success('Stock adjusted!'); setAdjModal(null); setAdjQty(''); setAdjReason(''); load();
     } catch(e:any) {
-      // If endpoint doesn't exist, show message
-      toast.success(`Stock adjustment recorded: ${adjQty} ${adjModal.product.unit}`);
-      setAdjModal(null); setAdjQty(''); setAdjReason('');
+      toast.error(e?.response?.data?.detail || 'Failed to adjust stock. Please try again.');
     }
   };
 

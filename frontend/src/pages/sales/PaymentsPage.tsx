@@ -83,7 +83,7 @@ export default function PaymentsPage() {
         {[
           { label: 'Total Payments', value: payments.length, color: 'text-indigo-600' },
           { label: 'Total Received', value: `₹${totalReceived.toLocaleString('en-IN')}`, color: 'text-green-600' },
-          { label: 'This Month', value: payments.filter(() => true).length, color: 'text-blue-600' },
+          { label: 'This Month', value: payments.filter(p => { const d = new Date(p.payment_date || p.created_at || ''); const now = new Date(); return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth(); }).length, color: 'text-blue-600' },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
             <div className="text-sm text-slate-500">{s.label}</div>
