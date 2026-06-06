@@ -25,3 +25,4 @@ venv/
 .claude/
 .DS_Store
 Thumbs.db
+backend/test_run.db

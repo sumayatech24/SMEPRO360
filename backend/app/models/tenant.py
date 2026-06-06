@@ -6,6 +6,7 @@ from app.db.base import Base
 class Tenant(Base):
     __tablename__ = "tenants"
     id = Column(Integer, primary_key=True)
+    client_id = Column(String(20), unique=True, nullable=True, index=True)  # public client identifier
     name = Column(String(255), nullable=False)
     slug = Column(String(100), unique=True, nullable=False)
     domain = Column(String(255), unique=True, nullable=True)
