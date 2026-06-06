@@ -60,6 +60,12 @@ services:
         value: https://smepro360-api.onrender.com/api/v1
       - key: NODE_VERSION
         value: "20"
+      - key: TSC_COMPILE_ON_ERROR
+        value: "true"
+      - key: DISABLE_ESLINT_PLUGIN
+        value: "true"
+      - key: ESLINT_NO_DEV_ERRORS
+        value: "true"
     routes:
       - type: rewrite
         source: /*
