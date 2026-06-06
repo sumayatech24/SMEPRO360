@@ -1,0 +1,6 @@
+# Default: auto line endings
+* text=auto
+
+# Docker and shell scripts must use LF (Linux containers)
+*.sh text eol=lf
+Dockerfile* text eol=lf

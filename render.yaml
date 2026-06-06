@@ -1,35 +1,44 @@
-# SMEPRO360 — one-click Render Blueprint (FREE tier)
-# Deploys BOTH the FastAPI backend (Docker) and the React frontend (static site).
-# Database stays on Supabase (already seeded). Nothing else to host.
+##################################################################
+# SMEPRO360 — Render Infrastructure as Code
 #
-# DEPLOY (≈3 minutes):
-#   1. Sign in to https://render.com with your GitHub account.
-#   2. New ➜ Blueprint ➜ pick the `sumayatech24/SMEPRO360` repo ➜ Render reads this file.
-#   3. You'll be prompted for the 2 secret env vars below (DATABASE_URL, SECRET_KEY).
-#      DATABASE_URL = postgresql://postgres:<your-supabase-pwd>@db.xxzjrhywtsqcafdtsdlg.supabase.co:5432/postgres?sslmode=require
-#      SECRET_KEY   = any long random string
-#   4. Apply ➜ both services build. Frontend auto-points at the backend URL.
+# Single Docker service:
+#   • Stage 1 (Docker build): Node 20 compiles the React frontend
+#   • Stage 2 (Docker run):   Python 3.12 FastAPI serves everything
+#     - /api/v1/*  → FastAPI REST API
+#     - /docs      → Swagger UI
+#     - /health    → health check
+#     - /*         → React SPA (served from /app/static_frontend)
 #
-# After first deploy you get:
-#   Backend : https://smepro360-api.onrender.com   (Swagger at /docs)
-#   Frontend: https://smepro360-web.onrender.com   (login admin@smepro360.com / Admin@123456)
-# Add custom domains (smepro360.com / api.smepro360.com) later in each service's Settings.
+# Render managed PostgreSQL — no Supabase needed.
+# SQLAlchemy creates all tables + seeds on first startup.
+##################################################################
+
+databases:
+  - name: smepro360-db
+    databaseName: smepro360
+    user: smepro360
+    plan: free
+    region: oregon
 
 services:
-  # ── Backend (FastAPI, Docker) ────────────────────────────────────────────
   - type: web
     name: smepro360-api
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     plan: free
+    region: oregon
     healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        sync: false   # Supabase connection string (prompted on deploy)
+        fromDatabase:
+          name: smepro360-db
+          property: connectionString
+      # SECRET_KEY must be set manually in the Render dashboard after deploy
+      # (or set sync:false here to be prompted on blueprint apply)
       - key: SECRET_KEY
-        sync: false   # long random string (prompted on deploy)
+        sync: false
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
@@ -44,29 +53,5 @@ services:
         value: admin@smepro360.com
       - key: FIRST_SUPERUSER_PASSWORD
         value: Admin@123456
-      # CORS — allow the Render frontend + future custom domains
       - key: BACKEND_CORS_ORIGINS
-        value: '["https://smepro360-web.onrender.com","https://smepro360.com","https://www.smepro360.com","http://localhost:3000"]'
-
-  # ── Frontend (React static site) ─────────────────────────────────────────
-  - type: web
-    name: smepro360-web
-    runtime: static
-    buildCommand: cd frontend && CI=false npm install --legacy-peer-deps && npm run build
-    staticPublishPath: ./frontend/build
-    pullRequestPreviewsEnabled: false
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://smepro360-api.onrender.com/api/v1
-      - key: NODE_VERSION
-        value: "20"
-      - key: TSC_COMPILE_ON_ERROR
-        value: "true"
-      - key: DISABLE_ESLINT_PLUGIN
-        value: "true"
-      - key: ESLINT_NO_DEV_ERRORS
-        value: "true"
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+        value: '["https://smepro360-api.onrender.com","https://smepro360.com","https://www.smepro360.com","http://localhost:3000"]'
