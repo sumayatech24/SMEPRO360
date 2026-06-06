@@ -1,0 +1,25 @@
+# Cloudflare Tunnel — expose the FastAPI backend at api.smepro360.com
+# using ONLY Cloudflare + Supabase (no third-party host needed).
+#
+# One-time setup (run on the machine/server that will run the backend):
+#   1. Install cloudflared:  https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/
+#   2. cloudflared tunnel login                # opens browser, authorizes your CF account
+#   3. cloudflared tunnel create smepro360-api # prints a Tunnel UUID + creates a credentials json
+#   4. Put the UUID below (tunnel:) and the credentials-file path.
+#   5. cloudflared tunnel route dns smepro360-api api.smepro360.com
+#   6. Run the backend:  uvicorn app.main:app --host 0.0.0.0 --port 8000
+#   7. Run the tunnel:   cloudflared tunnel --config ./cloudflared/config.yml run
+#
+# This maps https://api.smepro360.com -> http://localhost:8000 over Cloudflare's edge.
+
+tunnel: <YOUR_TUNNEL_UUID>
+credentials-file: <PATH_TO>/.cloudflared/<YOUR_TUNNEL_UUID>.json
+
+ingress:
+  - hostname: api.smepro360.com
+    service: http://localhost:8000
+    originRequest:
+      connectTimeout: 30s
+      noTLSVerify: true
+  # Catch-all (required last rule)
+  - service: http_status:404

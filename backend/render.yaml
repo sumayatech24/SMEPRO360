@@ -1,0 +1,35 @@
+# Render.com blueprint — deploys the FastAPI backend as api.smepro360.com
+# 1. Push repo to GitHub
+# 2. Render Dashboard → New → Blueprint → pick this repo
+# 3. Set the DATABASE_URL + SECRET_KEY env vars (marked sync:false) to your Supabase values
+# 4. After deploy, add a Custom Domain "api.smepro360.com" in Render and create the
+#    matching CNAME in Cloudflare DNS (DNS-only / grey cloud).
+services:
+  - type: web
+    name: smepro360-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false   # set to: postgresql://postgres:<pwd>@db.xxzjrhywtsqcafdtsdlg.supabase.co:5432/postgres?sslmode=require
+      - key: SECRET_KEY
+        sync: false
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "30"
+      - key: APP_NAME
+        value: SMEPRO360
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: BACKEND_CORS_ORIGINS
+        value: '["https://smepro360.com","https://www.smepro360.com","https://smepro360.pages.dev"]'
+      - key: FIRST_SUPERUSER
+        value: admin@smepro360.com
+      - key: FIRST_SUPERUSER_PASSWORD
+        sync: false

@@ -136,7 +136,6 @@ function App() {
           <Route path="hr/employees/:id"        element={<EmployeeDetailPage />} />
           <Route path="hr/resource-planning"    element={<ResourcePlanningPage />} />
           <Route path="my-space"               element={<MySpacePage />} />
-          <Route path="my-space"               element={<MySpacePage />} />
           <Route path="hr/leave-module"          element={<LeaveModulePage />} />
 
           {/* Projects */}
