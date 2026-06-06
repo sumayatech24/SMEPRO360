@@ -52,7 +52,7 @@ services:
   - type: web
     name: smepro360-web
     runtime: static
-    buildCommand: cd frontend && CI=false npm install && npm run build
+    buildCommand: cd frontend && CI=false npm install --legacy-peer-deps && npm run build
     staticPublishPath: ./frontend/build
     pullRequestPreviewsEnabled: false
     envVars:
